@@ -1,0 +1,58 @@
+{
+  "entities": {
+    "Teacher": {
+      "title": "Teacher",
+      "description": "A teacher being observed.",
+      "type": "object",
+      "properties": {
+        "adminId": { "type": "string" },
+        "name": { "type": "string" },
+        "subject": { "type": "string" },
+        "school": { "type": "string" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["adminId", "name", "subject", "school", "createdAt"]
+    },
+    "Observation": {
+      "title": "Observation",
+      "description": "An evaluation/observation session for a teacher.",
+      "type": "object",
+      "properties": {
+        "adminId": { "type": "string" },
+        "teacherId": { "type": "string" },
+        "teacherName": { "type": "string" },
+        "subject": { "type": "string" },
+        "school": { "type": "string" },
+        "date": { "type": "string" },
+        "time": { "type": "string" },
+        "overallRating": { "type": "string" },
+        "commendations": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "refinements": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "rubric": {
+          "type": "string"
+        },
+        "evidenceLog": {
+          "type": "string"
+        },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["adminId", "teacherId", "teacherName", "createdAt"]
+    }
+  },
+  "firestore": {
+    "teachers/{teacherId}": {
+      "schema": { "$ref": "#/entities/Teacher" },
+      "description": "Stores teachers."
+    },
+    "observations/{observationId}": {
+      "schema": { "$ref": "#/entities/Observation" },
+      "description": "Stores observation records."
+    }
+  }
+}

@@ -1,0 +1,80 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Primitives
+    function isSignedIn() { return request.auth != null; }
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+
+    // Validation
+    function isValidTeacher(data) {
+      return data.keys().hasAll(['adminId', 'name', 'subject', 'school', 'createdAt'])
+        // Exact key matching for create updates will be restricted by hasOnly
+        && data.adminId == request.auth.uid
+        && data.name is string && data.name.size() <= 100
+        && data.subject is string && data.subject.size() <= 100
+        && data.school is string && data.school.size() <= 100
+        && data.createdAt is timestamp;
+    }
+
+    match /teachers/{teacherId} {
+      allow get: if isSignedIn() && isValidId(teacherId) && resource.data.adminId == request.auth.uid;
+      allow list: if isSignedIn() && resource.data.adminId == request.auth.uid;
+      allow create: if isSignedIn() && isValidId(teacherId) 
+                    && isValidTeacher(incoming()) 
+                    && incoming().keys().size() == 5
+                    && incoming().createdAt == request.time;
+      allow update: if isSignedIn() && isValidId(teacherId) 
+                    && existing().adminId == request.auth.uid 
+                    && isValidTeacher(incoming())
+                    && incoming().adminId == existing().adminId
+                    && incoming().createdAt == existing().createdAt
+                    && incoming().diff(existing()).affectedKeys().hasOnly(['name', 'subject', 'school']);
+      allow delete: if isSignedIn() && isValidId(teacherId) && existing().adminId == request.auth.uid;
+    }
+
+    function isValidObservation(data) {
+      return data.keys().hasAll(['adminId', 'teacherId', 'teacherName', 'subject', 'school', 'date', 'time', 'overallRating', 'commendations', 'refinements', 'rubric', 'evidenceLog', 'createdAt'])
+        && data.adminId == request.auth.uid
+        && data.teacherId is string && data.teacherId.size() <= 128
+        && data.teacherName is string && data.teacherName.size() <= 100
+        && data.subject is string && data.subject.size() <= 100
+        && data.school is string && data.school.size() <= 100
+        && data.date is string && data.date.size() <= 50
+        && data.time is string && data.time.size() <= 50
+        && data.overallRating is string && data.overallRating.size() <= 50
+        && data.commendations is string && data.commendations.size() <= 100000 
+        && data.refinements is string && data.refinements.size() <= 100000
+        && data.rubric is string && data.rubric.size() <= 100000
+        && data.evidenceLog is string && data.evidenceLog.size() <= 100000
+        && data.createdAt is timestamp;
+    }
+
+    match /observations/{observationId} {
+      allow get: if isSignedIn() && isValidId(observationId) && resource.data.adminId == request.auth.uid;
+      allow list: if isSignedIn() && resource.data.adminId == request.auth.uid;
+      allow create: if isSignedIn() && isValidId(observationId) 
+                    && isValidObservation(incoming())
+                     && incoming().keys().size() == 13
+                    && incoming().createdAt == request.time
+                    && exists(/databases/$(database)/documents/teachers/$(incoming().teacherId))
+                    && get(/databases/$(database)/documents/teachers/$(incoming().teacherId)).data.adminId == request.auth.uid;
+      allow update: if isSignedIn() && isValidId(observationId) 
+                    && existing().adminId == request.auth.uid 
+                    && isValidObservation(incoming())
+                    && incoming().adminId == existing().adminId
+                    && incoming().teacherId == existing().teacherId
+                    && incoming().createdAt == existing().createdAt
+                    && incoming().diff(existing()).affectedKeys().hasOnly(['teacherName', 'subject', 'school', 'date', 'time', 'overallRating', 'commendations', 'refinements', 'rubric', 'evidenceLog']);
+      allow delete: if isSignedIn() && isValidId(observationId) && existing().adminId == request.auth.uid;
+    }
+  }
+}
