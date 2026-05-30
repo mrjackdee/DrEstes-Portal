@@ -6,7 +6,7 @@ import { handleFirestoreError, OperationType } from '../lib/firebase-error';
 import { Teacher, ObservationData } from '../types';
 
 interface DatabaseContextType {
-  user: User | null;
+  user: { uid: string, isGuest?: boolean } | null;
   loading: boolean;
   teachers: Teacher[];
   observations: ObservationData[];
@@ -14,19 +14,24 @@ interface DatabaseContextType {
   addObservation: (observation: Omit<ObservationData, 'id' | 'adminId' | 'createdAt' | 'trendData'>) => Promise<string>;
   login: () => Promise<void>;
   logoutUser: () => Promise<void>;
+  loginAsGuest: () => void;
 }
 
 const DatabaseContext = createContext<DatabaseContextType>({} as DatabaseContextType);
 
 export function DatabaseProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<{ uid: string, isGuest?: boolean } | null>(null);
   const [loading, setLoading] = useState(true);
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [observations, setObservations] = useState<ObservationData[]>([]);
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => {
-      setUser(u);
+      if (u) {
+        setUser({ uid: u.uid, isGuest: false });
+      } else {
+        setUser((prev) => prev?.isGuest ? prev : null);
+      }
       setLoading(false);
     });
     return () => unsub();
@@ -122,17 +127,30 @@ export function DatabaseProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const loginAsGuest = () => {
+    let guestId = localStorage.getItem('guest_admin_id');
+    if (!guestId) {
+      guestId = 'guest-' + Math.random().toString(36).substr(2, 9);
+      localStorage.setItem('guest_admin_id', guestId);
+    }
+    setUser({ uid: guestId, isGuest: true });
+  };
+
   const login = async () => {
     await loginWithGoogle();
   };
 
   const logoutUser = async () => {
-    await logout();
+    if (user?.isGuest) {
+       setUser(null);
+    } else {
+       await logout();
+    }
   };
 
   return (
     <DatabaseContext.Provider value={{
-      user, loading, teachers, observations, addTeacher, addObservation, login, logoutUser
+      user, loading, teachers, observations, addTeacher, addObservation, login, logoutUser, loginAsGuest
     }}>
       {children}
     </DatabaseContext.Provider>

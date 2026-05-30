@@ -9,7 +9,7 @@ import { cn } from './lib/utils';
 import { Button } from './components/ui';
 
 function AppContent() {
-  const { user, login, logoutUser, teachers, observations, loading } = useDatabase();
+  const { user, login, logoutUser, teachers, observations, loading, loginAsGuest } = useDatabase();
   const [activeTeacherObsId, setActiveTeacherObsId] = useState<string | null>(null);
   const [isSettingUp, setIsSettingUp] = useState(false);
   const [mobileTab, setMobileTab] = useState<'observe' | 'log' | 'analytics' | 'coaching'>('coaching');
@@ -23,10 +23,15 @@ function AppContent() {
       <div className="h-screen w-screen bg-[#F5F2ED] flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-[#FAF9F6] p-8 rounded-[24px] border border-[#D5DDC6] text-center shadow-lg">
           <h1 className="font-serif italic text-3xl text-[#3A3D32] mb-4">Admin Portal</h1>
-          <p className="text-sm text-[#7A7D72] mb-8">Please log in to manage classroom observations and coaching plans securely.</p>
-          <Button variant="primary" className="w-full" onClick={login}>
-            <Key className="w-4 h-4 mr-2" /> Log In with Google
-          </Button>
+          <p className="text-sm text-[#7A7D72] mb-8">Test the full experience safely without logging in, or use Google to save data securely over time.</p>
+          <div className="flex flex-col gap-3">
+             <Button variant="secondary" className="w-full bg-[#D5DDC6] text-[#3A3D32] hover:bg-[#B7B7A4]" onClick={loginAsGuest}>
+               Continue as Guest (Test Mode)
+             </Button>
+             <Button variant="primary" className="w-full" onClick={login}>
+               <Key className="w-4 h-4 mr-2" /> Log In with Google
+             </Button>
+          </div>
         </div>
       </div>
     );
@@ -119,9 +124,23 @@ function AppContent() {
   );
 }
 
+const GlobalOverlays = () => (
+  <>
+    <div className="fixed inset-0 pointer-events-none z-[9999] flex items-center justify-center overflow-hidden">
+      <span className="text-[150px] md:text-[250px] font-black text-[#3A3D32] opacity-[0.04] transform -rotate-45 select-none tracking-widest leading-none">
+        DRAFT
+      </span>
+    </div>
+    <div className="fixed bottom-[84px] md:bottom-4 right-2 md:right-4 z-[10000] text-[10px] md:text-xs text-[#7A7D72] bg-[#FAF9F6]/90 backdrop-blur px-3 py-1.5 rounded-full pointer-events-auto border border-[#D5DDC6] shadow-sm">
+      &copy; 2026 Digital Presence by <a href="http://www.DonOraGlobal.com/" target="_blank" rel="noopener noreferrer" className="underline hover:text-[#3A3D32] font-semibold transition-colors">DonOra Global</a>
+    </div>
+  </>
+);
+
 export default function App() {
   return (
     <DatabaseProvider>
+      <GlobalOverlays />
       <AppContent />
     </DatabaseProvider>
   )
