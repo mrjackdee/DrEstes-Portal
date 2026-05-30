@@ -3,7 +3,7 @@ import { cn } from '../../lib/utils';
 
 export function Card({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn('bg-[#FAF9F6] rounded-[24px] border border-[#D5DDC6] shadow-sm', className)} {...props}>
+    <div className={cn('bg-white rounded border border-[#e7eeff] shadow-sm', className)} {...props}>
       {children}
     </div>
   );
@@ -11,7 +11,7 @@ export function Card({ className, children, ...props }: React.HTMLAttributes<HTM
 
 export function CardHeader({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn('p-6 lg:p-8 pb-4', className)} {...props}>
+    <div className={cn('p-4 lg:p-6 pb-2', className)} {...props}>
       {children}
     </div>
   );
@@ -19,7 +19,7 @@ export function CardHeader({ className, children, ...props }: React.HTMLAttribut
 
 export function CardTitle({ className, children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
   return (
-    <h3 className={cn('font-semibold text-[11px] tracking-widest uppercase text-[#A5A58D]', className)} {...props}>
+    <h3 className={cn('font-semibold text-lg tracking-tight text-[#111c2d]', className)} {...props}>
       {children}
     </h3>
   );
@@ -27,7 +27,7 @@ export function CardTitle({ className, children, ...props }: React.HTMLAttribute
 
 export function CardContent({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn('p-6 lg:p-8 pt-0', className)} {...props}>
+    <div className={cn('p-4 lg:p-6 pt-0', className)} {...props}>
       {children}
     </div>
   );
@@ -39,20 +39,20 @@ export function Button({
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
   size?: 'default' | 'sm' | 'lg' | 'icon';
 }) {
-  const baseStyles = 'inline-flex items-center justify-center rounded-full font-semibold transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 uppercase tracking-widest text-[#F5F2ED]';
+  const baseStyles = 'inline-flex items-center justify-center rounded font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50';
   
   const variants = {
-    primary: 'bg-[#6B705C] text-white hover:bg-[#5A5E4D]',
-    secondary: 'bg-[#D5DDC6] text-[#3A3D32] hover:bg-[#B7B7A4]',
-    outline: 'border border-[#A5A58D] bg-transparent hover:bg-[#E3D5CA] text-[#3A3D32]',
-    ghost: 'hover:bg-[#E3D5CA] text-[#3A3D32]',
-    danger: 'bg-[#A5A58D] text-white hover:bg-[#6B705C]',
+    primary: 'bg-[#003262] text-white hover:bg-[#001d3d]',
+    secondary: 'bg-[#f0f3ff] text-[#003262] hover:bg-[#e7eeff]',
+    outline: 'border border-[#737780] bg-transparent hover:bg-[#f0f3ff] text-[#111c2d]',
+    ghost: 'hover:bg-[#f0f3ff] text-[#111c2d]',
+    danger: 'bg-[#ba1a1a] text-white hover:bg-[#93000a]',
   };
 
   const sizes = {
-    default: 'h-10 px-6 py-2 text-[10px]',
-    sm: 'h-9 px-4 text-[10px]',
-    lg: 'h-14 px-8 min-h-[48px] text-[11px]',
+    default: 'h-10 px-4 py-2',
+    sm: 'h-9 rounded px-3',
+    lg: 'h-12 rounded px-8 text-base min-h-[48px]',
     icon: 'h-10 w-10 min-h-[48px] min-w-[48px]',
   };
 
@@ -66,13 +66,13 @@ export function Button({
 export function Badge({ className, variant = 'default', children, ...props }: React.HTMLAttributes<HTMLDivElement> & { variant?: 'default' | 'proficient' | 'basic' }) {
   
   const variants = {
-    default: 'bg-[#E3D5CA] text-[#4A4A3F]',
-    proficient: 'bg-[#6B705C] text-white',
-    basic: 'bg-[#DDBEA9] text-[#4A4A3F]',
+    default: 'bg-[#f0f3ff] text-[#111c2d]',
+    proficient: 'bg-[#003262] text-white',
+    basic: 'bg-[#d5e3fc] text-[#0d1c2e]',
   };
 
   return (
-    <div className={cn('inline-flex items-center rounded-full px-3 py-1.5 text-[10px] uppercase font-bold tracking-widest', variants[variant], className)} {...props}>
+    <div className={cn('inline-flex items-center rounded px-2.5 py-0.5 text-xs font-medium', variants[variant], className)} {...props}>
       {children}
     </div>
   );

@@ -110,47 +110,48 @@ export function ActiveObservationView({ teacherId, onClose }: Props) {
   if(!teacher) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#F5F2ED] flex flex-col md:relative md:h-full md:w-full md:z-auto max-w-lg mx-auto md:max-w-none md:border-l md:border-[#D5DDC6]">
+    <div className="fixed inset-0 z-50 bg-[#ffffff] flex flex-col md:relative md:h-full md:w-full md:z-auto max-w-lg mx-auto md:max-w-none md:border-l md:border-[#e7eeff]">
       {/* Header */}
-      <div className="bg-[#F5F2ED] px-4 pt-4 pb-0 flex flex-col">
-        <div className="flex justify-between items-center mb-4">
-          <button onClick={onClose} className="p-2 -ml-2 rounded-full hover:bg-[#D5DDC6] text-[#3A3D32]">
+      <div className="bg-[#f9f9ff] px-4 pt-4 pb-0 flex flex-col border-b border-[#e7eeff] shadow-sm relative z-10">
+        <div className="flex items-center gap-3 mb-4">
+          <button onClick={onClose} className="p-2 -ml-2 rounded hover:bg-[#e7eeff] text-[#111c2d]">
             <X className="w-6 h-6" />
           </button>
-          <div className="text-center font-serif italic text-xl text-[#3A3D32]">
+          <div className="text-xl font-bold text-[#111c2d]">
             Classroom Observation
           </div>
-          <button className="p-2 -mr-2 rounded-full hover:bg-[#D5DDC6] text-[#3A3D32]">
+          <div className="flex-1" />
+          <button className="p-2 -mr-2 rounded hover:bg-[#e7eeff] text-[#111c2d]">
             <MoreVertical className="w-6 h-6" />
           </button>
         </div>
         
-        <div className="text-sm font-medium text-[#3A3D32] mb-1 font-serif">
-          Teacher: {teacher.name}
+        <div className="text-lg font-bold text-[#111c2d] mb-1">
+          {teacher.name}
         </div>
-        <div className="text-sm text-[#7A7D72] mb-4 leading-snug">
-          {teacher.subject} | {teacher.school}
+        <div className="text-sm text-[#737780] mb-4">
+          {teacher.subject} &bull; {teacher.school}
         </div>
 
-        <div className="flex justify-between mb-4">
-          <div className="bg-[#D5DDC6] text-[#3A3D32] px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">
+        <div className="flex justify-between items-center mb-4">
+          <div className="bg-[#f0f3ff] text-[#003262] px-3 py-1 rounded text-xs font-bold tracking-widest uppercase">
             Domain 3
           </div>
-          <div className="text-[#3A3D32] text-xs font-bold tracking-widest uppercase flex items-center gap-1 bg-[#E3D5CA] px-3 py-1 rounded-full">
-            <span className="text-[#A5A58D]">⏱</span> {Math.floor(elapsed / 60).toString().padStart(2, '0')}:{(elapsed % 60).toString().padStart(2, '0')}
+          <div className="text-[#003262] text-xs font-bold tracking-widest uppercase flex items-center gap-1 bg-[#f0f3ff] px-3 py-1 rounded">
+            <span className="text-[#003262]">⏱</span> {Math.floor(elapsed / 60).toString().padStart(2, '0')}:{(elapsed % 60).toString().padStart(2, '0')}
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="flex border-b border-[#D5DDC6]">
+        <div className="flex">
           <button 
-            className={cn("flex-1 pb-3 text-xs font-bold uppercase tracking-wider transition-colors", activeTab === 'evidence' ? "text-[#3A3D32] border-b-2 border-[#6B705C]" : "text-[#A5A58D]")}
+            className={cn("flex-1 pb-3 text-sm font-semibold uppercase tracking-wider transition-colors border-b-2", activeTab === 'evidence' ? "text-[#003262] border-[#003262]" : "text-[#737780] border-transparent")}
             onClick={() => setActiveTab('evidence')}
           >
             Evidence Log ({evidenceLog.length})
           </button>
           <button 
-            className={cn("flex-1 pb-3 text-xs font-bold uppercase tracking-wider transition-colors", activeTab === 'rubric' ? "text-[#3A3D32] border-b-2 border-[#6B705C]" : "text-[#A5A58D]")}
+            className={cn("flex-1 pb-3 text-sm font-semibold uppercase tracking-wider transition-colors border-b-2", activeTab === 'rubric' ? "text-[#003262] border-[#003262]" : "text-[#737780] border-transparent")}
             onClick={() => setActiveTab('rubric')}
           >
             Rubric
@@ -159,36 +160,36 @@ export function ActiveObservationView({ teacherId, onClose }: Props) {
       </div>
 
       {/* Content Area */}
-      <div className="flex-1 overflow-y-auto bg-white flex flex-col">
+      <div className="flex-1 overflow-y-auto bg-[#ffffff] flex flex-col">
         {activeTab === 'evidence' ? (
           <div className="flex-1 flex flex-col">
             <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
                 {evidenceLog.length === 0 ? (
-                    <div className="flex-1 flex items-center justify-center text-sm text-[#A5A58D] italic font-serif">
+                    <div className="flex-1 flex items-center justify-center text-sm text-[#737780] italic">
                         No evidence logged yet. Type below to begin.
                     </div>
                 ) : evidenceLog.map((log, idx) => (
-                    <div key={idx} className="bg-[#FAF9F6] border text-sm border-[#D5DDC6] rounded-[24px] p-6 flex gap-4 shadow-sm items-start">
-                        <div className="bg-[#D5DDC6] text-[#3A3D32] font-mono font-bold px-2 py-1 rounded-full text-[10px] shrink-0 mt-0.5">
+                    <div key={idx} className="bg-[#f9f9ff] border text-sm border-[#e7eeff] rounded p-4 flex gap-4 shadow-sm items-start">
+                        <div className="bg-[#003262] text-white font-mono font-bold px-2 py-1 rounded text-[10px] shrink-0 mt-0.5">
                         {log.time}
                         </div>
-                        <p className="text-[#3A3D32] flex-1 leading-relaxed">
+                        <p className="text-[#111c2d] flex-1 leading-relaxed">
                         {log.text}
                         </p>
                     </div>
                 ))}
             </div>
-            <div className="p-4 border-t border-[#D5DDC6] bg-[#F5F2ED]">
+            <div className="p-4 border-t border-[#e7eeff] bg-[#ffffff]">
                 <form onSubmit={handleAddEvidence} className="flex gap-2">
                     <input 
                         type="text" 
                         title="Evidence"
                         placeholder="Type evidence here..." 
-                        className="flex-1 p-4 rounded-full border border-[#D5DDC6] bg-white outline-none focus:border-[#6B705C] text-sm"
+                        className="flex-1 p-4 rounded border border-[#e7eeff] bg-[#f9f9ff] outline-none focus:border-[#003262] focus:ring-1 focus:ring-[#003262] text-sm"
                         value={currentEvidence}
                         onChange={e => setCurrentEvidence(e.target.value)}
                     />
-                    <Button type="submit" variant="primary" size="icon" className="rounded-full shrink-0">
+                    <Button type="submit" variant="primary" size="icon" className="shrink-0 h-auto px-6">
                         <Plus className="w-5 h-5 text-white" />
                     </Button>
                 </form>
@@ -197,13 +198,13 @@ export function ActiveObservationView({ teacherId, onClose }: Props) {
         ) : (
           <div className="p-4 flex flex-col gap-4">
             {standardRubric.map((item) => (
-              <div key={item.id} className="bg-[#FAF9F6] text-[#3A3D32] border border-[#D5DDC6] rounded-[24px] overflow-hidden shadow-sm">
-                <div className="p-8">
-                  <h3 className="text-lg font-serif italic mb-2 text-[#3A3D32]">{item.title}</h3>
-                  <p className="text-sm text-[#7A7D72] leading-snug">{item.description}</p>
+              <div key={item.id} className="bg-[#ffffff] text-[#111c2d] border border-[#e7eeff] rounded overflow-hidden shadow-sm">
+                <div className="p-6">
+                  <h3 className="text-lg font-bold mb-2 text-[#111c2d]">{item.title}</h3>
+                  <p className="text-sm text-[#737780] leading-snug">{item.description}</p>
                 </div>
-                <div className="bg-white p-8 border-t border-[#D5DDC6]">
-                  <div className="text-[10px] font-bold text-[#A5A58D] uppercase tracking-widest mb-4">Select Level</div>
+                <div className="bg-[#f9f9ff] p-6 border-t border-[#e7eeff]">
+                  <div className="text-[10px] font-bold text-[#737780] uppercase tracking-widest mb-4">Select Level</div>
                   <div className="grid grid-cols-2 gap-3">
                     <RatingButton 
                       level="Ineffective" 
@@ -234,9 +235,9 @@ export function ActiveObservationView({ teacherId, onClose }: Props) {
       </div>
 
       {/* Footer */}
-      <div className="p-6 bg-white border-t border-[#D5DDC6]">
-        <Button variant="primary" size="lg" disabled={saving} className="w-full flex items-center justify-center gap-2 text-sm rounded-full tracking-widest bg-[#3A3D32] text-white" onClick={handleSave}>
-          <Save className="w-4 h-4" />
+      <div className="p-4 bg-white border-t border-[#e7eeff]">
+        <Button variant="primary" size="lg" disabled={saving} className="w-full flex items-center justify-center gap-2 text-sm rounded bg-[#003262] text-white h-14" onClick={handleSave}>
+          <Save className="w-5 h-5" />
           {saving ? 'Saving...' : 'End & Save Session'}
         </Button>
       </div>
@@ -246,22 +247,22 @@ export function ActiveObservationView({ teacherId, onClose }: Props) {
 
 function RatingButton({ level, selected, onClick }: { level: PerformanceLevel | string, selected: boolean, onClick: () => void }) {
   
-  let styles = "relative overflow-hidden text-[10px] uppercase tracking-widest font-bold rounded-xl min-h-[48px] flex items-center justify-center border transition-all duration-200 p-2 text-center leading-tight";
+  let styles = "relative overflow-hidden text-[10px] md:text-[11px] uppercase tracking-widest font-bold rounded min-h-[56px] flex items-center justify-center border transition-all duration-200 p-2 text-center leading-tight shadow-sm";
   
   if (level === 'Ineffective') {
-    styles = cn(styles, selected ? "bg-[#3A3D32] text-white border-[#3A3D32]" : "bg-white text-[#3A3D32] border-[#D5DDC6] hover:border-[#3A3D32]");
+    styles = cn(styles, selected ? "bg-[#ba1a1a] text-white border-[#ba1a1a]" : "bg-white text-[#ba1a1a] border-[#e7eeff] hover:border-[#ba1a1a] hover:bg-[#fff0f0]");
   } else if (level === 'Developing') {
-    styles = cn(styles, selected ? "bg-[#A5A58D] text-white border-[#A5A58D]" : "bg-white text-[#A5A58D] border-[#D5DDC6] hover:border-[#A5A58D]"); 
+    styles = cn(styles, selected ? "bg-[#8d4f00] text-white border-[#8d4f00]" : "bg-white text-[#8d4f00] border-[#e7eeff] hover:border-[#8d4f00] hover:bg-[#fff8f0]"); 
   } else if (level === 'Effective') {
-    styles = cn(styles, selected ? "bg-[#6B705C] text-white border-2 border-[#6B705C]" : "bg-white text-[#6B705C] border-[#D5DDC6] hover:border-[#6B705C]");
+    styles = cn(styles, selected ? "bg-[#386a20] text-white border-[#386a20]" : "bg-white text-[#386a20] border-[#e7eeff] hover:border-[#386a20] hover:bg-[#f3faf0]");
   } else if (level === 'Highly Effective') {
-    styles = cn(styles, selected ? "bg-[#B7B7A4] text-white border-[#B7B7A4]" : "bg-white text-[#B7B7A4] border-[#D5DDC6] hover:border-[#B7B7A4]"); 
+    styles = cn(styles, selected ? "bg-[#006782] text-white border-[#006782]" : "bg-white text-[#006782] border-[#e7eeff] hover:border-[#006782] hover:bg-[#f0f9ff]"); 
   }
 
   return (
     <button className={styles} onClick={onClick}>
-      {selected && level === 'Effective' ? (
-        <span className="flex items-center gap-1.5"><Check className="w-3 h-3" strokeWidth={3} /> {level}</span>
+      {selected ? (
+        <span className="flex items-center gap-1.5"><Check className="w-4 h-4" strokeWidth={3} /> {level}</span>
       ) : (
         level
       )}

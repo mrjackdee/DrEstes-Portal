@@ -10,21 +10,21 @@ interface LayoutProps {
 
 export function DesktopLayout({ children, onNewObservation }: LayoutProps) {
   return (
-    <div className="flex h-screen overflow-hidden bg-[#F5F2ED] font-sans antialiased text-[#4A4A3F]">
+    <div className="flex h-screen overflow-hidden bg-[#f9f9ff] font-sans antialiased text-[#111c2d]">
       {/* Sidebar - Desktop Only */}
-      <aside className="hidden md:flex w-64 flex-col border-r border-[#D5DDC6] bg-[#F5F2ED]">
+      <aside className="hidden md:flex w-64 flex-col border-r border-[#e7eeff] bg-white">
         <div className="p-6 pb-2 shrink-0">
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-8 h-8 bg-[#6B705C] text-white rounded-full flex items-center justify-center font-bold font-serif italic">
+            <div className="w-8 h-8 bg-[#003262] text-white rounded flex items-center justify-center font-bold">
                B
             </div>
             <div>
-              <h1 className="font-bold text-sm text-[#3A3D32] leading-tight font-serif italic">Clarence W. Bailey<br/>Elementary &<br/>Bramlette STEAM<br/>Academy</h1>
-              <p className="text-[#A5A58D] text-[10px] uppercase tracking-wider mt-1 font-semibold">Admin Portal</p>
+              <h1 className="font-bold text-sm text-[#111c2d] leading-tight">Clarence W. Bailey<br/>Elementary &<br/>Bramlette STEAM<br/>Academy</h1>
+              <p className="text-[#737780] text-[10px] uppercase tracking-wider mt-1 font-semibold">Admin Portal</p>
             </div>
           </div>
           
-          <Button onClick={onNewObservation} className="w-full justify-start gap-2 mb-8 bg-[#6B705C] hover:bg-[#5A5E4D] text-[#F5F2ED] rounded-full">
+          <Button onClick={onNewObservation} className="w-full justify-start gap-2 mb-8 bg-[#003262] hover:bg-[#001d3d] text-white rounded">
             <Plus className="w-5 h-5" />
             New Observation
           </Button>
@@ -55,10 +55,10 @@ function NavItem({ icon, label, active, className }: { icon: React.ReactNode, la
   return (
     <button
       className={cn(
-        "flex w-full items-center gap-3 px-4 py-3 rounded-full text-[11px] uppercase tracking-wider font-semibold transition-colors duration-200",
+        "flex w-full items-center gap-3 px-4 py-3 rounded text-[11px] uppercase tracking-wider font-semibold transition-colors duration-200",
         active 
-          ? "bg-[#6B705C] text-[#F5F2ED] shadow-sm" // Slightly lighter navy for active state vs main button
-          : "text-[#7A7D72] hover:bg-[#D5DDC6] hover:text-[#3A3D32]",
+          ? "bg-[#f0f3ff] text-[#003262] shadow-sm" // Slightly lighter navy for active state vs main button
+          : "text-[#737780] hover:bg-[#e7eeff] hover:text-[#111c2d]",
         className
       )}
     >
